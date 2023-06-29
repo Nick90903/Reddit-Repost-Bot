@@ -46,7 +46,7 @@ function saveID() {
                 if(err) throw err;
             }); // write it back 
         }});
-        console.log('New post detected, ID:', id, ' Title:', title, ' Posting to Twitter in', config.postDelay/1000, ' seconds');
+        console.log('New post detected, ID:', id, ' Title:', title, ' Posting to Twitter in', config.postDelay, ' ms');
         setTimeout(() => updateTwitter(id), config.postDelay);
     }
 }
