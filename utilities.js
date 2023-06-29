@@ -1,24 +1,30 @@
 const fs = require('fs');
-const afs = require('fs/promises');
 const snoowrap = require('snoowrap');
 const { TwitterApi } = require('twitter-api-v2');
-let config = '';
 const keys = require('./keys.json');
-const { rejects } = require('assert');
+const { title } = require('process');
+let config;
+let log;
 let userClient;
-let r = '';
-let lastID = '';
-let post = '';
-let title = '';
-let id = '';
+let r;
+let lastID;
+let post;
 
-function loadConfig() {
+function loadConfig(file) {
     return new Promise((resolve, reject) => {
-        fs.readFile('./configuration.json', 'utf-8', (err, data) => {
+        fs.readFile(file, 'utf-8', (err, data) => {
             if (err) reject(err);
             resolve(JSON.parse(data));
         });
     });
+}
+
+function saveFile(file, obj) {
+    return new Promise((resolve, reject) => {
+        json = JSON.stringify(obj);
+        fs.writeFile(file, json, 'utf-8', (err) => {if(err) reject(err)});
+        resolve();
+    })
 }
 
 function initSnoo() {
@@ -44,40 +50,40 @@ async function initTwitter() {
 }
 
 async function grabNew() {
-    config = await loadConfig();
-    post = await r.getSubreddit(config.subreddit).getNew({limit: 1});
-    title = post[0].title;
-    id = post[0].id;
-    lastID = config.last;
-    saveID();
+    console.log("checking new");
+    config = await loadConfig('./configuration.json');
+    log = await loadConfig('./log.json');
+    post = await r.getSubreddit(config.subreddit).getNew({limit: 4});
+    if(post[0].id == lastID) return;
+    newDetected(post);
 }
 
-async function saveID() {
-    if(lastID == id) return;  
-        obj = await loadConfig(); //now it an object
-        obj.last = id; //add some data
-        json = JSON.stringify(obj); //convert it back to json
-        fs.writeFile('./configuration.json', json, 'utf8', (err) => {
-            if(err) throw err;
-        }); 
-
-    console.log('New post detected, ID:', id, ' Title:', title, ' Posting to Twitter in', config.postDelay, ' ms');
-    setTimeout(() => updateTwitter(id), config.postDelay);
+function newDetected(posts) {
+    posts.forEach(item => {
+        if(log.posted.includes(item.id)) return;
+        console.log('New Post Detected', item.title, item.id);
+        log.posted.shift();
+        log.posted.push(item.id)
+        lastID = item.id;
+        saveFile('./log.json', log);
+        console.log('New post detected, ID:', item.id, ' Title:', item.title, ' Posting to Twitter in', config.postDelay, ' ms');
+        setTimeout(() => updateTwitter(item.id), config.postDelay);
+    });
 }
 
 async function updateTwitter(ident) {
     const tit = await r.getSubmission(ident).fetch();
-    if(tit.removed_by_category){
+    if(tit.removed_by_category || tit.link_flair_text === 'PSA' || tit.link_flair_text === "Mod Post"){
         console.log('Post', tit.title, 'Removed')
     } else {
         //Edit the body of the tweet here.
-        const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free on r/FGF \n \n #FGF #FreeGameFindings \n https://www.reddit.com/comments/' + ident)
+        const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident)
        console.log('Tweet', createdTweet.id, ':', createdTweet.text);
     }
 }
 
 async function startBot() {
-    config = await loadConfig();
+    config = await loadConfig('./configuration.json');
     console.log('Starting Reddit Repost Bot');
     initSnoo();
     await initTwitter();
