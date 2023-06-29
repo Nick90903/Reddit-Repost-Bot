@@ -49,11 +49,15 @@ async function initTwitter() {
     console.log('Twitter Connected');
 }
 
-async function grabNew() {
+async function apiGrabNew() {
     console.log("checking new");
     config = await loadConfig('./configuration.json');
     log = await loadConfig('./log.json');
-    post = await r.getSubreddit(config.subreddit).getNew({limit: 4});
+    try{
+        post = await r.getSubreddit(config.subreddit).getNew({limit: 4});
+    } catch (error) {
+        console.log(error, 'Reddit error');
+    }
     if(post[0].id == lastID) return;
     newDetected(post);
 }
@@ -77,18 +81,22 @@ async function updateTwitter(ident) {
         console.log('Post', tit.title, 'Removed')
     } else {
         //Edit the body of the tweet here.
-        const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident)
-       console.log('Tweet', createdTweet.id, ':', createdTweet.text);
+        try {
+            const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident)
+            console.log('Tweet', createdTweet.id, ':', createdTweet.text);
+        } catch (error) {
+            console.log(error, 'Twitter error');
+        }
     }
 }
 
 async function startBot() {
     config = await loadConfig('./configuration.json');
     console.log('Starting Reddit Repost Bot');
-    initSnoo();
     await initTwitter();
     console.log('Watching', config.subreddit);
-    config.redditDelay > 1000 ? setInterval(grabNew, config.redditDelay) : setInterval(grabNew, 1000);
+    initSnoo();
+    config.redditDelay > 1000 ? setInterval(apiGrabNew, config.redditDelay) : setInterval(apiGrabNew, 1000);
 }
 
 startBot();
