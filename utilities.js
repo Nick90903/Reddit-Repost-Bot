@@ -46,7 +46,7 @@ function saveID() {
                 if(err) throw err;
             }); // write it back 
         }});
-        console.log('New post detected, ID:', id, 'Title:', title);
+        console.log('New post detected, ID:', id, ' Title:', title, ' Posting to Twitter in', config.postDelay/1000, ' seconds');
         setTimeout(() => updateTwitter(id), config.postDelay);
     }
 }
@@ -56,7 +56,7 @@ async function updateTwitter(ident) {
     if(tit.removed_by_category){
         console.log('Post', tit.title, 'Removed')
     } else {
-        console.log(tit.title, ' is #Free \n \n #FGF #FreeGameFindings \n https://www.reddit.com/comments/' + ident);
+        //Edit the body of the tweet here.
         const {data: createdTweet} = await userClient.v2.tweet(tit.title + 'is #Free on r/FGF \n \n #FGF #FreeGameFindings \n https://www.reddit.com/comments/' + ident)
        console.log('Tweet', createdTweet.id, ':', createdTweet.text);
     }
