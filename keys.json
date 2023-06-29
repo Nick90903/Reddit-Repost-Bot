@@ -1,0 +1,10 @@
+{
+    "userAgent": "SET_CUSTOM_USER_AGENT",
+    "clientID": "REDDIT_CLIENT_ID",
+    "clientSecret": "REDDIT_CLIENT_SECRET",
+    "refreshToken": "REDDIT_REFRESH_TOKEN",
+    "twitterApiKey": "TWITTER_API_KEY",
+    "twitterApiSecret": "TWITTER_API_SECRET",
+    "twitterAccessToken": "TWITTER_ACCESS_TOKEN",
+    "twitterAccessSecret": "TWITTER_ACCESS_SECRET"
+}

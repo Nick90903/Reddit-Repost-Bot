@@ -1,0 +1,17 @@
+{
+  "name": "testbot",
+  "version": "1.0.0",
+  "description": "Twitter bot",
+  "main": "utilities.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node utilities.js"
+  },
+  "author": "Nick90903",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.3.1",
+    "snoowrap": "^1.23.0",
+    "twitter-api-v2": "^1.15.0"
+  }
+}
