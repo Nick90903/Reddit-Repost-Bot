@@ -53,12 +53,12 @@ async function apiGrabNew() {
     log = await loadConfig('./log.json');
     try{
         post = await r.getSubreddit(config.subreddit).getNew({limit: 4});
+        console.log('Checking for new posts, Newest ID:', post[0].id);
+        if(post[0].id == lastID) return;
+        newDetected(post);
     } catch (error) {
         console.log(error, 'Reddit error');
     }
-    console.log('Checking for new posts, Newest ID:', post[0].id);
-    if(post[0].id == lastID) return;
-    newDetected(post);
 }
 
 function newDetected(posts) {
@@ -93,8 +93,8 @@ async function startBot() {
     config = await loadConfig('./configuration.json');
     console.log('Starting Reddit Repost Bot');
     await initTwitter();
-    console.log('Watching', config.subreddit);
     initSnoo();
+    console.log('Watching', config.subreddit, 'With delay', config.redditDelay, 'ms');
     config.redditDelay > 1000 ? setInterval(apiGrabNew, config.redditDelay) : setInterval(apiGrabNew, 1000);
 }
 
