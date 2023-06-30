@@ -56,7 +56,7 @@ async function apiGrabNew() {
     } catch (error) {
         console.log(error, 'Reddit error');
     }
-    console.log('Checking for new posts, Newest ID:', post[0]);
+    console.log('Checking for new posts, Newest ID:', post[0].id);
     if(post[0].id == lastID) return;
     newDetected(post);
 }
