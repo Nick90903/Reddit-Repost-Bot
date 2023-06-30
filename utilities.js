@@ -2,7 +2,6 @@ const fs = require('fs');
 const snoowrap = require('snoowrap');
 const { TwitterApi } = require('twitter-api-v2');
 const keys = require('./keys.json');
-const { title } = require('process');
 let config;
 let log;
 let userClient;
@@ -50,7 +49,6 @@ async function initTwitter() {
 }
 
 async function apiGrabNew() {
-    console.log("checking new");
     config = await loadConfig('./configuration.json');
     log = await loadConfig('./log.json');
     try{
@@ -58,6 +56,7 @@ async function apiGrabNew() {
     } catch (error) {
         console.log(error, 'Reddit error');
     }
+    console.log('Checking for new posts, Newest ID:', post[0]);
     if(post[0].id == lastID) return;
     newDetected(post);
 }
