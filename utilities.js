@@ -74,14 +74,26 @@ function newDetected(posts) {
     });
 }
 
+                //  Set up your twitter posts here. Examples have been
+                //  included for the original use of r/FreeGameFindings
+                
+                //  Adding your own should be as simple as filtering
+                //  any unwanted flairs and then adding their text
 async function updateTwitter(ident) {
     const tit = await r.getSubmission(ident).fetch();
-    if(tit.removed_by_category || tit.link_flair_text === 'PSA' || tit.link_flair_text === "Mod Post"){
-        console.log('Post', tit.title, 'Removed')
-    } else {
-        //Edit the body of the tweet here.
+    if(tit.removed_by_category || tit.link_flair_text === "Mod Post"){
+        console.log('Post', tit.title, 'Removed from queue');
+        return;
+    } else if(tit.link_flair_text === 'PSA') {
         try {
-            const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident)
+            const {data: createdTweet} = await userClient.v2.tweet('A new PSA is live on /r/FGF. \n' + tit.title + '\n \n #FGF #FreeGameFindings \n \n https://redd.it/' + ident);
+            console.log('Tweet', createdTweet.id, ':', createdTweet.text);
+        } catch (error) {
+            console.log(error, 'Twitter error');
+        }
+    } else {
+        try {
+            const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident);
             console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         } catch (error) {
             console.log(error, 'Twitter error');
