@@ -16,7 +16,7 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
   <li><a href="https://www.reddit.com/prefs/apps">Create Reddit App</a>
     <ul>
       <li>"Create Another App" -> Set type to "Script" -> Redirect URI to <a href="https://not-an-aardvark.github.io/reddit-oauth-helper/">Reddit OAuth Helper</a></li>
-      <li>Save <a href="https://imgur.com/a/u4CcrHO"> Client ID</a> (Will be the long string underlined in red)</li>
+      <li>Save <a href="https://imgbox.com/IsXjfzM7"> Client ID</a> (Will be the long string underlined in red)</li>
       <li>Save Client Secret</li>
     </ul>
   </li>
