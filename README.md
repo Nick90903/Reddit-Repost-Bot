@@ -16,7 +16,7 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
   <li><a href="https://www.reddit.com/prefs/apps">Create Reddit App</a>
     <ul>
       <li>"Create Another App" -> Set type to "Script" -> Redirect URI to <a href="https://not-an-aardvark.github.io/reddit-oauth-helper/">Reddit OAuth Helper</a></li>
-      <li>Save Client ID (Will be the long string under the name at the top right of the app)</li>
+      <li>Save <a href="https://imgur.com/a/u4CcrHO"> Client ID</a> (Will be the long string underlined in red)</li>
       <li>Save Client Secret</li>
     </ul>
   </li>
@@ -24,8 +24,6 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
 
 
 ### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Clone the repo
    ```sh
