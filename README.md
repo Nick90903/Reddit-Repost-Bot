@@ -1,7 +1,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Setting up the bot has is simple enough. You'll need to get your Reddit API Keys, Twitter API Keys, and NPM installed and updated.
+Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Twitter API Keys, and NPM installed and updated.
 
 ### Prerequisites
 <ol>
