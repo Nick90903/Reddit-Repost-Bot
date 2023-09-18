@@ -1,0 +1,11 @@
+{
+    "TTemplate": {
+        "PSA": {
+            "a":"A new PSA is live on r/FGF. \n",
+            "b":"\n \n #FGF #FreeGameFindings \n \n https://redd.it/"
+        },
+        "Base":{
+            "a":" is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/"
+        }
+    }
+}

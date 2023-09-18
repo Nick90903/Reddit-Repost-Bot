@@ -10,6 +10,7 @@ let userClient;
 let r;
 let lastID;
 let post;
+let templates;
 
 function loadConfig(file) {
     return new Promise((resolve, reject) => {
@@ -88,14 +89,14 @@ async function updateTwitter(ident) {
         return;
     } else if(post.link_flair_text === 'PSA') {
         try {
-            const {data: createdTweet} = await userClient.v2.tweet('A new PSA is live on /r/FGF. \n' + post.title + '\n \n #FGF #FreeGameFindings \n \n https://redd.it/' + ident);
+            const {data: createdTweet} = await userClient.v2.tweet(templates.TTemplate.PSA.a + post.title + templates.TTemplate.PSA.a + ident);
             console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         } catch (error) {
             console.log(error, 'Twitter error');
         }
     } else {
         try {
-            const {data: createdTweet} = await userClient.v2.tweet(post.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident);
+            const {data: createdTweet} = await userClient.v2.tweet(post.title + templates.TTemplate.Base.a + ident);
             console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         } catch (error) {
             console.log(error, 'Twitter error');
@@ -105,6 +106,7 @@ async function updateTwitter(ident) {
 
 async function startBot() {
     config = await loadConfig('./reddit_config.json');
+    templates = await loadConfig('./template.json');
     console.log('Starting Reddit Repost Bot');
     await initTwitter();
     initSnoo();
@@ -112,4 +114,12 @@ async function startBot() {
     config.redditDelay > 1000 ? setInterval(apiGrabNew, config.redditDelay) : setInterval(apiGrabNew, 1000);
 }
 
-startBot();
+//startBot();
+async function test(){
+    templates = await loadConfig('./template.json');
+    console.log(templates.TTemplate.PSA.a);
+}
+
+test();
+
+
