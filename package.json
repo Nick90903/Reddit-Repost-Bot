@@ -2,10 +2,10 @@
   "name": "testbot",
   "version": "1.0.0",
   "description": "Twitter bot",
-  "main": "utilities.js",
+  "main": "bot_main.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node utilities.js"
+    "start": "node bot_main.js"
   },
   "author": "Nick90903",
   "license": "ISC",

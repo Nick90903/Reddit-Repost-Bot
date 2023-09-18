@@ -54,7 +54,7 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
     <ul>
       <li>The first check is making sure the reddit post still exists. This is done to make sure the OP or a moderator of the sub has not removed the post during the delay set earlier. Here you can also add checks for flairs you want ignored</li>
       <li>You can add as many checks as you want with a custom template for each Flair your subreddit has</li>
-      <li><code>tit</code> is the object of the Reddit post. You can use any of the operators from the <a href="https://not-an-aardvark.github.io/snoowrap/">Snoowrap Documentation</a>. I only needed the title so the example shows <code>tit.title</code></li>
+      <li><code>post</code> is the object of the Reddit post. You can use any of the operators from the <a href="https://not-an-aardvark.github.io/snoowrap/">Snoowrap Documentation</a>. I only needed the title so the example shows <code>tpost.title</code></li>
       <li>The identity of the reddit post, the short string used in the URL of the post, is appended to the end of each of the templates to complete the URL to load the thread in the Twitter post. It is added using <code>ident</code></li>
       <li>The final is a catch for any posts that do not meet any other template and you want posted using a generic template. This one sees the majority of use for the original purpose
     </ul>

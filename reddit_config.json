@@ -1,0 +1,10 @@
+{    
+"userAgent": "SET_CUSTOM_USER_AGENT",
+"clientID": "REDDIT_CLIENT_ID",
+"clientSecret": "REDDIT_CLIENT_SECRET",
+"refreshToken": "REDDIT_REFRESH_TOKEN",
+"subreddit":"Enter_Desired_Sub_Name",
+"last":"Blank",
+"redditDelay":"3500",
+"postDelay":"300000"
+}

@@ -1,5 +1,7 @@
 # Configuration Files
-*.json
+facebook_config.json
+reddit_config.json
+twitter_config.json
 
 # Logs
 logs

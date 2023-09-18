@@ -1,7 +1,9 @@
 const fs = require('fs');
 const snoowrap = require('snoowrap');
 const { TwitterApi } = require('twitter-api-v2');
-const keys = require('./keys.json');
+const rConf = require('./reddit_config.json');
+const tConf = require('./twitter_config.json');
+const fConf = require('./facebook_config.json');
 let config;
 let log;
 let userClient;
@@ -29,10 +31,10 @@ function saveFile(file, obj) {
 function initSnoo() {
     console.log('Connecting to Reddit');
     r = new snoowrap({
-        userAgent: keys.userAgent,
-        clientId: keys.clientID,
-        clientSecret: keys.clientSecret,
-        refreshToken: keys.refreshToken
+        userAgent: rConf.userAgent,
+        clientId: rConf.clientID,
+        clientSecret: rConf.clientSecret,
+        refreshToken: rConf.refreshToken
     });
     console.log('snoowrapper initialized');
 };
@@ -40,16 +42,16 @@ function initSnoo() {
 async function initTwitter() {
     console.log('Connecting to Twitter');
     userClient = new TwitterApi({
-        appKey: keys.twitterApiKey,
-        appSecret: keys.twitterApiSecret,
-        accessToken: keys.twitterAccessToken,
-        accessSecret: keys.twitterAccessSecret,
+        appKey: tConf.apiKey,
+        appSecret: tConf.apiSecret,
+        accessToken: tConf.accessToken,
+        accessSecret: tConf.accessSecret,
     });
     console.log('Twitter Connected');
 }
 
 async function apiGrabNew() {
-    config = await loadConfig('./configuration.json');
+    config = await loadConfig('./reddit_config.json');
     log = await loadConfig('./log.json');
     try{
         post = await r.getSubreddit(config.subreddit).getNew({limit: 4});
@@ -80,20 +82,20 @@ function newDetected(posts) {
                 //  Adding your own should be as simple as filtering
                 //  any unwanted flairs and then adding their text
 async function updateTwitter(ident) {
-    const tit = await r.getSubmission(ident).fetch();
-    if(tit.removed_by_category || tit.link_flair_text === "Mod Post"){
-        console.log('Post', tit.title, 'Removed from queue');
+    const post = await r.getSubmission(ident).fetch();
+    if(post.removed_by_category || post.link_flair_text === "Mod Post"){
+        console.log('Post', post.title, 'Removed from queue');
         return;
-    } else if(tit.link_flair_text === 'PSA') {
+    } else if(post.link_flair_text === 'PSA') {
         try {
-            const {data: createdTweet} = await userClient.v2.tweet('A new PSA is live on /r/FGF. \n' + tit.title + '\n \n #FGF #FreeGameFindings \n \n https://redd.it/' + ident);
+            const {data: createdTweet} = await userClient.v2.tweet('A new PSA is live on /r/FGF. \n' + post.title + '\n \n #FGF #FreeGameFindings \n \n https://redd.it/' + ident);
             console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         } catch (error) {
             console.log(error, 'Twitter error');
         }
     } else {
         try {
-            const {data: createdTweet} = await userClient.v2.tweet(tit.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident);
+            const {data: createdTweet} = await userClient.v2.tweet(post.title + ' is #Free, see the /r/FreeGameFindings thread below! \n \n #FGF #FreeGameFindings \n https://redd.it/' + ident);
             console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         } catch (error) {
             console.log(error, 'Twitter error');
@@ -102,7 +104,7 @@ async function updateTwitter(ident) {
 }
 
 async function startBot() {
-    config = await loadConfig('./configuration.json');
+    config = await loadConfig('./reddit_config.json');
     console.log('Starting Reddit Repost Bot');
     await initTwitter();
     initSnoo();
