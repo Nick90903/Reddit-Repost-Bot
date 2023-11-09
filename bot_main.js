@@ -3,7 +3,6 @@ const snoowrap = require('snoowrap');
 const { TwitterApi } = require('twitter-api-v2');
 const rConf = require('./reddit_config.json');
 const tConf = require('./twitter_config.json');
-const fConf = require('./facebook_config.json');
 let config;
 let log;
 let userClient;
@@ -12,6 +11,7 @@ let lastID;
 let post;
 let templates;
 
+// Used to load any configuration file
 function loadConfig(file) {
     return new Promise((resolve, reject) => {
         fs.readFile(file, 'utf-8', (err, data) => {
@@ -21,6 +21,7 @@ function loadConfig(file) {
     });
 }
 
+// Used to save any file
 function saveFile(file, obj) {
     return new Promise((resolve, reject) => {
         json = JSON.stringify(obj);
@@ -51,6 +52,7 @@ async function initTwitter() {
     console.log('Twitter Connected');
 }
 
+// Reloads all config files (So they can be changed without closing the bot) then checks the 4 most recent posts
 async function apiGrabNew() {
     config = await loadConfig('./reddit_config.json');
     log = await loadConfig('./log.json');
@@ -77,16 +79,15 @@ function newDetected(posts) {
     });
 }
 
-                //  Set up your twitter posts here. Examples have been
-                //  included for the original use of r/FreeGameFindings
-                
-                //  Adding your own should be as simple as filtering
-                //  any unwanted flairs and then adding their text
+//  Set up your twitter posts here. Examples have been included for the original use of r/FreeGameFindings
+//  Adding your own should be as simple as filtering any unwanted flairs and then adding their text
 async function updateTwitter(ident) {
     const post = await r.getSubmission(ident).fetch();
+    // Removes deleted/Removed and "Mod Posts" from repost queue
     if(post.removed_by_category || post.link_flair_text === "Mod Post"){
         console.log('Post', post.title, 'Removed from queue');
         return;
+    // Custom template for "PSA" posts
     } else if(post.link_flair_text === 'PSA') {
         try {
             const {data: createdTweet} = await userClient.v2.tweet(templates.TTemplate.PSA.a + post.title + templates.TTemplate.PSA.a + ident);
@@ -94,6 +95,7 @@ async function updateTwitter(ident) {
         } catch (error) {
             console.log(error, 'Twitter error');
         }
+    // Uses default template for all other posts
     } else {
         try {
             const {data: createdTweet} = await userClient.v2.tweet(post.title + templates.TTemplate.Base.a + ident);
@@ -113,13 +115,3 @@ async function startBot() {
     console.log('Watching', config.subreddit, 'With delay', config.redditDelay, 'ms');
     config.redditDelay > 1000 ? setInterval(apiGrabNew, config.redditDelay) : setInterval(apiGrabNew, 1000);
 }
-
-//startBot();
-async function test(){
-    templates = await loadConfig('./template.json');
-    console.log(templates.TTemplate.PSA.a);
-}
-
-test();
-
-
