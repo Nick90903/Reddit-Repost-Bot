@@ -115,3 +115,5 @@ async function startBot() {
     console.log('Watching', config.subreddit, 'With delay', config.redditDelay, 'ms');
     config.redditDelay > 1000 ? setInterval(apiGrabNew, config.redditDelay) : setInterval(apiGrabNew, 1000);
 }
+
+startBot();
