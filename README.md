@@ -39,7 +39,7 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
    ```js
    "subreddit":"Enter_Desired_Sub_Name"
    ```
-5. The Twitter post delay (Time from Reddit post made to Tweet posted) in `reddit_config.json `
+5. Set the Twitter post delay (Time from Reddit post made to Tweet posted) in `reddit_config.json `
    ```js
    "postDelay":"YOUR_TIME_IN_MS"
    ```
