@@ -47,14 +47,16 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
 ## Usage
 
 #### Changing Tweet Template
+The templates are now stored in `template.json`.
 <ol>
-  <li>Navigate to Utilities.js and open in your preferred editor</li>
-  <li>On line 82 you will see the start or the "updateTwitter" function</li>
+  <li>Navigate to `template.json` and open in your preferred editor</li>
+  <li>Here you will see an example template</li>
   <li>Edit each possibility or add your own 
     <ul>
-      <li>The first check is making sure the reddit post still exists. This is done to make sure the OP or a moderator of the sub has not removed the post during the delay set earlier. Here you can also add checks for flairs you want ignored</li>
-      <li>You can add as many checks as you want with a custom template for each Flair your subreddit has</li>
-      <li><code>post</code> is the object of the Reddit post. You can use any of the operators from the <a href="https://not-an-aardvark.github.io/snoowrap/">Snoowrap Documentation</a>. I only needed the title so the example shows <code>tpost.title</code></li>
+      <li>You can make custom templates for any of the supported sites (Twitter(X) is default. FB is in progress now)</li>
+      <li>Under each site add each tag you want a specific template for</li>
+      <li>Enter `bot_main.js` and head to Line 84. Here you will see the filtering for Reddit Tags.</li>
+      <li><code>post</code> is the object of the Reddit post. You can use any of the operators from the <a href="https://not-an-aardvark.github.io/snoowrap/">Snoowrap Documentation</a>. I only needed the title so the example shows <code>post.title</code></li>
       <li>The identity of the reddit post, the short string used in the URL of the post, is appended to the end of each of the templates to complete the URL to load the thread in the Twitter post. It is added using <code>ident</code></li>
       <li>The final is a catch for any posts that do not meet any other template and you want posted using a generic template. This one sees the majority of use for the original purpose
     </ul>
