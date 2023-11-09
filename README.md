@@ -35,11 +35,11 @@ Setting up the bot is simple enough. You'll need to get your Reddit API Keys, Tw
    ```
 3. Enter your API keys into `keys.json`. Refresh token will be made using the <a href="https://not-an-aardvark.github.io/reddit-oauth-helper/">Reddit OAuth Helper</a> being sure to select "Read" and "Permanent" under "Scope Name"
 
-4. Customize the watched subreddit in `config.json`
+4. Customize the watched subreddit in `reddit_config.json`
    ```js
-   "subreddit":"YOUR_SUBREDDIT_HERE"
+   "subreddit":"Enter_Desired_Sub_Name"
    ```
-5. The Twitter post delay (Time from Reddit post made to Tweet posted) in `config.json `
+5. The Twitter post delay (Time from Reddit post made to Tweet posted) in `reddit_config.json `
    ```js
    "postDelay":"YOUR_TIME_IN_MS"
    ```
